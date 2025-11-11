@@ -1,0 +1,42 @@
+fddj🧩 3. What would happen in a real runtime
+
+In a production runtime (like Intel TBB, OpenMP tasking, etc.), you’d do one of two things:
+
+✅ Option 1: Reference counting
+
+Each task would maintain:
+
+unsigned int ref_count;
+
+
+Initially 1.
+Every child increments the parent’s count when it is created.
+When a task terminates, it decrements the parent’s ref count.
+When the count hits 0 → you free that task_t.
+
+This ensures memory is freed as soon as no one depends on it anymore.
+
+✅ Option 2: Central garbage collection
+
+After runtime_finalize() or periodically, the runtime walks through all task records and frees those with status == TERMINATED and no parent references.
+
+🧩 4. So yes — you are right
+
+In the current version:
+
+Each task_t stays in memory after completion.
+
+That’s a memory leak if you spawn many tasks.
+
+But it’s intentional for simplicity, since this runtime runs once and exits immediately after all tasks finish.
+
+So the “bad memory management” is by design — they deliberately ignored freeing to make the logic easier to follow.
+
+🧠 Summary
+Question	Answer
+Are parent/child pointers kept alive in memory?	Yes, until the process ends
+Is memory freed at runtime?	No
+Is it a problem?	Only if you spawn millions of tasks or run indefinitely
+Why not fix it now?	Because the lab focuses on task scheduling & dependencies, not memory management
+
+Would you like me to show how a safe memory-freeing mechanism could be added without breaking the dependency logic (for learning purposes)?
