@@ -56,7 +56,9 @@ task_t* dequeue_task(tasks_queue_t *q)
     }
 
     task_t *t = q->task_buffer[q->index-1];
-    q->index = (q->index - 1)% q->task_buf_size;
+    // q->index = (q->index - 1)% q->task_buf_size;
+    q->index--;
+
 
     return t;
 }
