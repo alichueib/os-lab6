@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "tasks_implem.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c"
+    }
+}

@@ -8,7 +8,7 @@
 
 // #define NB_TASKS 10
 
-#define NB_TASKS 1000 
+#define NB_TASKS 1000
 
 
 #define NB_INTERVALS 100000000
